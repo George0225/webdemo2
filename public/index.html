@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医疗器械数据平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-card .label {
+            font-size: 0.875rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box button {
+            padding: 0.875rem 2rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-box button:hover {
+            background: #5568d3;
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: #f0f2f5;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .filter-tag:hover,
+        .filter-tag.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Data Table */
+        .data-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            color: #333;
+        }
+
+        .update-time {
+            font-size: 0.875rem;
+            color: #888;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-valid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-expired {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pagination button:hover {
+            background: #f0f2f5;
+        }
+
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #888;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏥 医疗器械数据平台</h1>
+        <p>实时抓取 · 动态更新 · 便捷查询</p>
+    </header>
+
+    <div class="container">
+        <!-- Stats -->
+        <div class="stats-grid" id="statsContainer">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>加载统计中...</p>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索产品名称、厂商、注册证号...">
+                <button onclick="searchDevices()">🔍 搜索</button>
+            </div>
+            <div class="filter-tags">
+                <span class="filter-tag active" onclick="filterByCategory('all')">全部</span>
+                <span class="filter-tag" onclick="filterByCategory('防护用品')">防护用品</span>
+                <span class="filter-tag" onclick="filterByCategory('检测设备')">检测设备</span>
+                <span class="filter-tag" onclick="filterByCategory('影像设备')">影像设备</span>
+                <span class="filter-tag" onclick="filterByCategory('手术器械')">手术器械</span>
+                <span class="filter-tag" onclick="filterByCategory('耗材')">耗材</span>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="data-section">
+            <div class="section-header">
+                <h2>📋 医疗器械列表</h2>
+                <span class="update-time" id="updateTime">更新时间: --</span>
+            </div>
+            <div id="tableContainer">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>加载数据中...</p>
+                </div>
+            </div>
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+
+    <script>
+        // 全局状态
+        let currentPage = 1;
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        // API基础URL（本地开发用相对路径，生产环境自动适配）
+        const API_BASE = window.location.hostname === 'localhost'
+            ? 'http://localhost:8888/.netlify/functions/api'
+            : '/.netlify/functions/api';
+
+        // 加载统计数据
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+
+                const statsHtml = `
+                    <div class="stat-card">
+                        <h3>📊 总收录器械</h3>
+                        <div class="number">${data.totalDevices.toLocaleString()}</div>
+                        <div class="label">件医疗器械产品</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🏭 主要厂商</h3>
+                        <div class="number">86</div>
+                        <div class="label">家合作生产企业</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📁 产品类别</h3>
+                        <div class="number">5</div>
+                        <div class="label">大主要分类</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🔄 数据更新</h3>
+                        <div class="number">实时</div>
+                        <div class="label">动态抓取更新</div>
+                    </div>
+                `;
+
+                document.getElementById('statsContainer').innerHTML = statsHtml;
+            } catch (error) {
+                console.error('加载统计失败:', error);
+            }
+        }
+
+        // 加载器械数据
+        async function loadDevices(page = 1) {
+            try {
+                currentPage = page;
+                const params = new URLSearchParams({
+                    page: page,
+                    limit: 20,
+                    category: currentCategory
+                });
+
+                if (searchQuery) {
+                    const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(searchQuery)}`);
+                    const data = await response.json();
+                    renderTable(data.results, { total: data.count, page: 1, totalPages: 1 });
+                } else {
+                    const response = await fetch(`${API_BASE}/devices?${params}`);
+                    const data = await response.json();
+                    renderTable(data.data, data.pagination);
+                    document.getElementById('updateTime').textContent =
+                        '更新时间: ' + new Date(data.updateTime).toLocaleString('zh-CN');
+                }
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('tableContainer').innerHTML =
+                    '<p style="text-align:center;color:#888;padding:2rem;">加载失败，请稍后重试</p>';
+            }
+        }
+
+        // 渲染表格
+        function renderTable(devices, pagination) {
+            if (!devices || devices.length === 0) {
+                document.getElementById('tableContainer').innerHTML =
+                    '<p style="text-align:center;color:#888;padding:2rem;">暂无数据</p>';
+                return;
+            }
+
+            const tableHtml = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>产品名称</th>
+                            <th>型号规格</th>
+                            <th>类别</th>
+                            <th>生产厂家</th>
+                            <th>注册证号</th>
+                            <th>有效期至</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${devices.map(device => `
+                            <tr>
+                                <td><strong>${device.name}</strong></td>
+                                <td>${device.model}</td>
+                                <td><span class="category-tag">${device.category}</span></td>
+                                <td>${device.manufacturer}</td>
+                                <td><code>${device.regNumber}</code></td>
+                                <td>${device.expiryDate}</td>
+                                <td><span class="status-badge ${device.status === '有效' ? 'status-valid' : 'status-expired'}">${device.status}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('tableContainer').innerHTML = tableHtml;
+            renderPagination(pagination);
+        }
+
+        // 渲染分页
+        function renderPagination(pagination) {
+            if (!pagination || pagination.totalPages <= 1) {
+                document.getElementById('pagination').innerHTML = '';
+                return;
+            }
+
+            const { page, totalPages } = pagination;
+            let html = '';
+
+            // 上一页
+            html += `<button ${page <= 1 ? 'disabled' : ''} onclick="loadDevices(${page - 1})">上一页</button>`;
+
+            // 页码
+            const startPage = Math.max(1, page - 2);
+            const endPage = Math.min(totalPages, page + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button class="${i === page ? 'active' : ''}" onclick="loadDevices(${i})">${i}</button>`;
+            }
+
+            // 下一页
+            html += `<button ${page >= totalPages ? 'disabled' : ''} onclick="loadDevices(${page + 1})">下一页</button>`;
+
+            document.getElementById('pagination').innerHTML = html;
+        }
+
+        // 搜索
+        function searchDevices() {
+            const input = document.getElementById('searchInput');
+            searchQuery = input.value.trim();
+            loadDevices(1);
+        }
+
+        // 分类筛选
+        function filterByCategory(category) {
+            currentCategory = category;
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+
+            // 更新标签样式
+            document.querySelectorAll('.filter-tag').forEach(tag => {
+                tag.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            loadDevices(1);
+        }
+
+        // 回车搜索
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDevices();
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadDevices();
+
+            // 定时刷新（每5分钟）
+            setInterval(() => {
+                loadStats();
+                loadDevices(currentPage);
+            }, 300000);
+        });
+    </script>
+</body>
+</html>

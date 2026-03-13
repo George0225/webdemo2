@@ -641,29 +641,122 @@
             position: relative;
         }
 
-        /* Fade In Animation for Sections */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        /* Medical Tech Background Animation */
+        .medical-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        #medicalCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.4;
+        }
+
+        /* ECG Wave Overlay */
+        .ecg-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 150'%3E%3Cpath d='M0,75 L50,75 L60,75 L70,20 L80,130 L90,40 L100,110 L110,75 L1200,75' stroke='%230071e3' stroke-width='2' fill='none' opacity='0.3'/%3E%3C/svg%3E") repeat-x;
+            background-size: 200px 150px;
+            animation: ecg-flow 3s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes ecg-flow {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        /* Floating Medical Icons */
+        .medical-icon {
+            position: absolute;
+            color: rgba(0, 113, 227, 0.15);
+            font-size: 40px;
+            animation: float-icon 15s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(0, 113, 227, 0.3);
+        }
+
+        @keyframes float-icon {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            25% {
+                transform: translateY(-30px) rotate(5deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-20px) rotate(-5deg);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translateY(-40px) rotate(3deg);
+                opacity: 0.5;
             }
         }
 
-        .news-section,
-        .stats-grid,
-        .search-section,
-        .data-section {
-            animation: fadeInUp 0.6s ease-out backwards;
+        /* DNA Helix Animation */
+        .dna-strand {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(0, 113, 227, 0.2) 20%,
+                rgba(0, 113, 227, 0.4) 50%,
+                rgba(0, 113, 227, 0.2) 80%,
+                transparent 100%
+            );
+            animation: dna-pulse 4s ease-in-out infinite;
         }
 
-        .news-section { animation-delay: 0.1s; }
-        .stats-grid { animation-delay: 0.2s; }
-        .search-section { animation-delay: 0.3s; }
-        .data-section { animation-delay: 0.4s; }
+        @keyframes dna-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Data Stream Lines */
+        .data-stream {
+            position: absolute;
+            width: 1px;
+            background: linear-gradient(180deg,
+                transparent,
+                rgba(52, 199, 89, 0.3),
+                rgba(0, 113, 227, 0.5),
+                rgba(52, 199, 89, 0.3),
+                transparent
+            );
+            animation: data-flow 8s linear infinite;
+        }
+
+        @keyframes data-flow {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Hexagon Grid */
+        .hex-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%230071e3' fill-opacity='0.05'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-7.5L27.99 34H28v2.31h-.01L17 42.65V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
 
         /* Toast Notification */
         .toast-container {
@@ -1092,6 +1185,12 @@
         <div class="tech-line"></div>
         <div class="tech-line"></div>
         <div class="tech-line"></div>
+    </div>
+
+    <!-- Medical Tech Background Animation -->
+    <div class="medical-bg">
+        <canvas id="medicalCanvas"></canvas>
+        <div class="ecg-overlay"></div>
     </div>
 
     <!-- Toast Container -->
@@ -1540,8 +1639,288 @@
             }
         }
 
+        // 医疗科技背景动画
+        function initMedicalBackground() {
+            const canvas = document.getElementById('medicalCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let width, height;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            // 粒子系统 - 代表数据点/分子
+            const particles = [];
+            const particleCount = 50;
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 3 + 2;
+                    this.connections = [];
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 113, 227, 0.6)';
+                    ctx.fill();
+
+                    // 发光效果
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 113, 227, 0.2)';
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            // DNA双螺旋
+            let dnaOffset = 0;
+            function drawDNA() {
+                const centerX = width * 0.85;
+                const centerY = height * 0.5;
+                const amplitude = 60;
+                const frequency = 0.02;
+                const speed = 0.02;
+
+                dnaOffset += speed;
+
+                // 绘制双螺旋
+                for (let y = -200; y < 200; y += 10) {
+                    const x1 = centerX + Math.sin((y + dnaOffset * 50) * frequency) * amplitude;
+                    const x2 = centerX + Math.sin((y + dnaOffset * 50) * frequency + Math.PI) * amplitude;
+
+                    // 连接线（碱基对）
+                    ctx.beginPath();
+                    ctx.moveTo(x1, centerY + y);
+                    ctx.lineTo(x2, centerY + y);
+                    ctx.strokeStyle = `rgba(52, 199, 89, ${0.3 + Math.sin((y + dnaOffset * 50) * 0.05) * 0.2})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    // 双链节点
+                    ctx.beginPath();
+                    ctx.arc(x1, centerY + y, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 113, 227, 0.7)';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(x2, centerY + y, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(52, 199, 89, 0.7)';
+                    ctx.fill();
+                }
+            }
+
+            // 心跳波形
+            let ecgOffset = 0;
+            function drawECG() {
+                const centerY = height * 0.85;
+                const amplitude = 30;
+
+                ecgOffset += 2;
+
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+
+                for (let x = 0; x < width; x += 2) {
+                    const adjustedX = x + ecgOffset;
+                    let y = centerY;
+
+                    // 创建心跳波形
+                    const cycle = adjustedX % 300;
+                    if (cycle > 100 && cycle < 120) {
+                        y += Math.sin((cycle - 100) * Math.PI / 20) * amplitude * 0.3;
+                    } else if (cycle > 140 && cycle < 160) {
+                        y -= amplitude;
+                    } else if (cycle > 160 && cycle < 180) {
+                        y += amplitude * 0.5;
+                    } else if (cycle > 180 && cycle < 200) {
+                        y -= amplitude * 0.2;
+                    }
+
+                    ctx.lineTo(x, y);
+                }
+
+                ctx.strokeStyle = 'rgba(255, 59, 48, 0.4)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // 添加发光效果
+                ctx.beginPath();
+                for (let x = 0; x < width; x += 2) {
+                    const adjustedX = x + ecgOffset;
+                    let y = centerY;
+
+                    const cycle = adjustedX % 300;
+                    if (cycle > 100 && cycle < 120) {
+                        y += Math.sin((cycle - 100) * Math.PI / 20) * amplitude * 0.3;
+                    } else if (cycle > 140 && cycle < 160) {
+                        y -= amplitude;
+                    } else if (cycle > 160 && cycle < 180) {
+                        y += amplitude * 0.5;
+                    } else if (cycle > 180 && cycle < 200) {
+                        y -= amplitude * 0.2;
+                    }
+
+                    if (x === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = 'rgba(255, 59, 48, 0.1)';
+                ctx.lineWidth = 8;
+                ctx.stroke();
+            }
+
+            // 医疗图标
+            const medicalSymbols = ['+', '⚕', '🔬', '💊', '🧬', '🏥'];
+            const floatingSymbols = [];
+
+            for (let i = 0; i < 8; i++) {
+                floatingSymbols.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    symbol: medicalSymbols[i % medicalSymbols.length],
+                    size: Math.random() * 20 + 20,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    speedY: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.3 + 0.1
+                });
+            }
+
+            function drawFloatingSymbols() {
+                floatingSymbols.forEach(sym => {
+                    sym.x += sym.speedX;
+                    sym.y += sym.speedY;
+
+                    if (sym.x < -50) sym.x = width + 50;
+                    if (sym.x > width + 50) sym.x = -50;
+                    if (sym.y < -50) sym.y = height + 50;
+                    if (sym.y > height + 50) sym.y = -50;
+
+                    ctx.font = `${sym.size}px Arial`;
+                    ctx.fillStyle = `rgba(0, 113, 227, ${sym.opacity})`;
+                    ctx.fillText(sym.symbol, sym.x, sym.y);
+                });
+            }
+
+            // 连接线
+            function drawConnections() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 113, 227, ${0.2 * (1 - distance / 150)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            // 扫描线效果
+            let scanY = 0;
+            function drawScanLine() {
+                scanY += 1;
+                if (scanY > height) scanY = 0;
+
+                ctx.beginPath();
+                ctx.moveTo(0, scanY);
+                ctx.lineTo(width, scanY);
+                ctx.strokeStyle = 'rgba(0, 113, 227, 0.1)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // 扫描点
+                ctx.beginPath();
+                ctx.arc(width * 0.1, scanY, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(52, 199, 89, 0.6)';
+                ctx.fill();
+            }
+
+            // 动画循环
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                // 绘制六边形网格背景
+                drawHexGrid();
+
+                // 绘制粒子
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+
+                drawConnections();
+                drawDNA();
+                drawECG();
+                drawFloatingSymbols();
+                drawScanLine();
+
+                requestAnimationFrame(animate);
+            }
+
+            // 六边形网格
+            function drawHexGrid() {
+                const hexSize = 30;
+                const hexHeight = hexSize * Math.sqrt(3);
+
+                ctx.strokeStyle = 'rgba(0, 113, 227, 0.05)';
+                ctx.lineWidth = 1;
+
+                for (let y = 0; y < height + hexHeight; y += hexHeight) {
+                    for (let x = 0; x < width + hexSize * 2; x += hexSize * 3) {
+                        const offsetX = (y / hexHeight % 2) * hexSize * 1.5;
+                        drawHexagon(x + offsetX, y, hexSize);
+                    }
+                }
+            }
+
+            function drawHexagon(x, y, size) {
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = (Math.PI / 3) * i;
+                    const hx = x + size * Math.cos(angle);
+                    const hy = y + size * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(hx, hy);
+                    else ctx.lineTo(hx, hy);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            animate();
+        }
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化医疗背景动画
+            initMedicalBackground();
+
             loadStats();
             loadDevices();
             loadNews(false); // 初始化不显示Toast

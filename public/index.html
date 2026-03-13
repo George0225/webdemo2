@@ -358,10 +358,10 @@
         let currentCategory = 'all';
         let searchQuery = '';
 
-        // API基础URL（本地开发用相对路径，生产环境自动适配）
+        // API基础URL（本地开发用完整路径，生产环境用相对路径）
         const API_BASE = window.location.hostname === 'localhost'
-            ? 'http://localhost:8888/.netlify/functions/api'
-            : '/.netlify/functions/api';
+            ? 'http://localhost:8888/api'
+            : '/api';
 
         // 加载统计数据
         async function loadStats() {

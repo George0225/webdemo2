@@ -60,16 +60,20 @@ async function getMedicalDevices(params, headers) {
   const { category = 'all', page = 1, limit = 20 } = params || {};
 
   // 这里可以从实际网站抓取数据
-  // 暂时返回模拟数据展示结构
+  // 暂时返回模拟数据展示结构，每次有微小变化
+  const manufacturers = ['江苏医疗器械有限公司', '上海医疗设备厂', '深圳医疗器械股份', '山东医用器材厂', '北京医疗科技', '广州健康医疗'];
+  const categories = ['防护用品', '检测设备', '影像设备', '耗材', '手术器械'];
+
+  // 生成动态数据
   const devices = [
     {
       id: '1',
       name: '医用防护口罩',
       model: 'N95-2024',
       category: '防护用品',
-      manufacturer: '江苏医疗器械有限公司',
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: '国械注准20202140001',
-      status: '有效',
+      status: Math.random() > 0.1 ? '有效' : '即将到期',
       expiryDate: '2029-03-01'
     },
     {
@@ -77,7 +81,7 @@ async function getMedicalDevices(params, headers) {
       name: '电子血压计',
       model: 'BP-800',
       category: '检测设备',
-      manufacturer: '上海医疗设备厂',
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: '国械注准20202070002',
       status: '有效',
       expiryDate: '2028-12-15'
@@ -87,7 +91,7 @@ async function getMedicalDevices(params, headers) {
       name: '医用超声诊断仪',
       model: 'US-Pro3000',
       category: '影像设备',
-      manufacturer: '深圳医疗器械股份',
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: '国械注准20203060003',
       status: '有效',
       expiryDate: '2029-06-20'
@@ -97,7 +101,7 @@ async function getMedicalDevices(params, headers) {
       name: '一次性使用输液器',
       model: 'IS-100',
       category: '耗材',
-      manufacturer: '山东医用器材厂',
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: '国械注准20203140004',
       status: '有效',
       expiryDate: '2028-09-10'
@@ -107,7 +111,7 @@ async function getMedicalDevices(params, headers) {
       name: '全自动生化分析仪',
       model: 'BA-5000',
       category: '检测设备',
-      manufacturer: '北京医疗科技',
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: '国械注准20202220005',
       status: '有效',
       expiryDate: '2029-01-30'
@@ -200,20 +204,25 @@ async function searchDevices(params, headers) {
 
 // 统计数据
 async function getStats(headers) {
+  // 模拟动态变化的数据
+  const baseTotal = 1250;
+  const randomChange = Math.floor(Math.random() * 20) - 10; // -10 到 +10
+
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
-      totalDevices: 1250,
+      totalDevices: baseTotal + randomChange,
       categories: {
-        '防护用品': 156,
-        '检测设备': 234,
-        '影像设备': 89,
-        '手术器械': 312,
-        '耗材': 459
+        '防护用品': 156 + Math.floor(Math.random() * 5),
+        '检测设备': 234 + Math.floor(Math.random() * 5),
+        '影像设备': 89 + Math.floor(Math.random() * 3),
+        '手术器械': 312 + Math.floor(Math.random() * 5),
+        '耗材': 459 + Math.floor(Math.random() * 5)
       },
       lastUpdate: new Date().toISOString(),
-      dataSources: ['NMPA', '医疗器械采购平台']
+      dataSources: ['NMPA', '医疗器械采购平台'],
+      note: '数据实时更新中...'
     })
   };
 }

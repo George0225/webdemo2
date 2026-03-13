@@ -108,5 +108,18 @@ git commit -m "更新功能"
 git push origin main  # 自动触发部署
 ```
 
+## GitHub仓库
+- **URL**: https://github.com/George0225/webdemo2
+- **分支**: main
+- **提交**: Initial commit: Medical device tracker
+
+## Netlify部署步骤（下一步）
+1. 登录 [netlify.com](https://netlify.com)
+2. 点击 "Add new site" → "Import an existing project"
+3. 选择 GitHub → 授权 → 选择 `webdemo2` 仓库
+4. 构建设置保持默认（Build command留空，Publish directory: public）
+5. 点击 "Deploy site"
+6. 获得自动分配的 `.netlify.app` 域名
+
 ---
 *最后更新: 2026-03-13*

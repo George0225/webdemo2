@@ -61727,15 +61727,17 @@ exports.handler = async (event, context) => {
 };
 async function getMedicalDevices(params, headers) {
   const { category = "all", page = 1, limit = 20 } = params || {};
+  const manufacturers = ["\u6C5F\u82CF\u533B\u7597\u5668\u68B0\u6709\u9650\u516C\u53F8", "\u4E0A\u6D77\u533B\u7597\u8BBE\u5907\u5382", "\u6DF1\u5733\u533B\u7597\u5668\u68B0\u80A1\u4EFD", "\u5C71\u4E1C\u533B\u7528\u5668\u6750\u5382", "\u5317\u4EAC\u533B\u7597\u79D1\u6280", "\u5E7F\u5DDE\u5065\u5EB7\u533B\u7597"];
+  const categories = ["\u9632\u62A4\u7528\u54C1", "\u68C0\u6D4B\u8BBE\u5907", "\u5F71\u50CF\u8BBE\u5907", "\u8017\u6750", "\u624B\u672F\u5668\u68B0"];
   const devices = [
     {
       id: "1",
       name: "\u533B\u7528\u9632\u62A4\u53E3\u7F69",
       model: "N95-2024",
       category: "\u9632\u62A4\u7528\u54C1",
-      manufacturer: "\u6C5F\u82CF\u533B\u7597\u5668\u68B0\u6709\u9650\u516C\u53F8",
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: "\u56FD\u68B0\u6CE8\u51C620202140001",
-      status: "\u6709\u6548",
+      status: Math.random() > 0.1 ? "\u6709\u6548" : "\u5373\u5C06\u5230\u671F",
       expiryDate: "2029-03-01"
     },
     {
@@ -61743,7 +61745,7 @@ async function getMedicalDevices(params, headers) {
       name: "\u7535\u5B50\u8840\u538B\u8BA1",
       model: "BP-800",
       category: "\u68C0\u6D4B\u8BBE\u5907",
-      manufacturer: "\u4E0A\u6D77\u533B\u7597\u8BBE\u5907\u5382",
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: "\u56FD\u68B0\u6CE8\u51C620202070002",
       status: "\u6709\u6548",
       expiryDate: "2028-12-15"
@@ -61753,7 +61755,7 @@ async function getMedicalDevices(params, headers) {
       name: "\u533B\u7528\u8D85\u58F0\u8BCA\u65AD\u4EEA",
       model: "US-Pro3000",
       category: "\u5F71\u50CF\u8BBE\u5907",
-      manufacturer: "\u6DF1\u5733\u533B\u7597\u5668\u68B0\u80A1\u4EFD",
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: "\u56FD\u68B0\u6CE8\u51C620203060003",
       status: "\u6709\u6548",
       expiryDate: "2029-06-20"
@@ -61763,7 +61765,7 @@ async function getMedicalDevices(params, headers) {
       name: "\u4E00\u6B21\u6027\u4F7F\u7528\u8F93\u6DB2\u5668",
       model: "IS-100",
       category: "\u8017\u6750",
-      manufacturer: "\u5C71\u4E1C\u533B\u7528\u5668\u6750\u5382",
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: "\u56FD\u68B0\u6CE8\u51C620203140004",
       status: "\u6709\u6548",
       expiryDate: "2028-09-10"
@@ -61773,7 +61775,7 @@ async function getMedicalDevices(params, headers) {
       name: "\u5168\u81EA\u52A8\u751F\u5316\u5206\u6790\u4EEA",
       model: "BA-5000",
       category: "\u68C0\u6D4B\u8BBE\u5907",
-      manufacturer: "\u5317\u4EAC\u533B\u7597\u79D1\u6280",
+      manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)],
       regNumber: "\u56FD\u68B0\u6CE8\u51C620202220005",
       status: "\u6709\u6548",
       expiryDate: "2029-01-30"
@@ -61850,20 +61852,23 @@ async function searchDevices(params, headers) {
   };
 }
 async function getStats(headers) {
+  const baseTotal = 1250;
+  const randomChange = Math.floor(Math.random() * 20) - 10;
   return {
     statusCode: 200,
     headers,
     body: JSON.stringify({
-      totalDevices: 1250,
+      totalDevices: baseTotal + randomChange,
       categories: {
-        "\u9632\u62A4\u7528\u54C1": 156,
-        "\u68C0\u6D4B\u8BBE\u5907": 234,
-        "\u5F71\u50CF\u8BBE\u5907": 89,
-        "\u624B\u672F\u5668\u68B0": 312,
-        "\u8017\u6750": 459
+        "\u9632\u62A4\u7528\u54C1": 156 + Math.floor(Math.random() * 5),
+        "\u68C0\u6D4B\u8BBE\u5907": 234 + Math.floor(Math.random() * 5),
+        "\u5F71\u50CF\u8BBE\u5907": 89 + Math.floor(Math.random() * 3),
+        "\u624B\u672F\u5668\u68B0": 312 + Math.floor(Math.random() * 5),
+        "\u8017\u6750": 459 + Math.floor(Math.random() * 5)
       },
       lastUpdate: (/* @__PURE__ */ new Date()).toISOString(),
-      dataSources: ["NMPA", "\u533B\u7597\u5668\u68B0\u91C7\u8D2D\u5E73\u53F0"]
+      dataSources: ["NMPA", "\u533B\u7597\u5668\u68B0\u91C7\u8D2D\u5E73\u53F0"],
+      note: "\u6570\u636E\u5B9E\u65F6\u66F4\u65B0\u4E2D..."
     })
   };
 }

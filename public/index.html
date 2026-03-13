@@ -340,7 +340,10 @@
         <div class="data-section">
             <div class="section-header">
                 <h2>📋 医疗器械列表</h2>
-                <span class="update-time" id="updateTime">更新时间: --</span>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span class="update-time" id="updateTime">更新时间: --</span>
+                    <button onclick="manualRefresh()" style="padding: 0.5rem 1rem; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">🔄 手动刷新</button>
+                </div>
             </div>
             <div id="tableContainer">
                 <div class="loading">
@@ -376,19 +379,19 @@
                         <div class="label">件医疗器械产品</div>
                     </div>
                     <div class="stat-card">
-                        <h3>🏭 主要厂商</h3>
-                        <div class="number">86</div>
-                        <div class="label">家合作生产企业</div>
+                        <h3>🏭 数据厂商</h3>
+                        <div class="number">${Object.keys(data.categories).length}</div>
+                        <div class="label">大分类</div>
                     </div>
                     <div class="stat-card">
                         <h3>📁 产品类别</h3>
-                        <div class="number">5</div>
-                        <div class="label">大主要分类</div>
+                        <div class="number">${Object.values(data.categories).reduce((a, b) => a + b, 0)}</div>
+                        <div class="label">件产品</div>
                     </div>
                     <div class="stat-card">
                         <h3>🔄 数据更新</h3>
                         <div class="number">实时</div>
-                        <div class="label">动态抓取更新</div>
+                        <div class="label">${data.note || '动态抓取更新'}</div>
                     </div>
                 `;
 
@@ -499,6 +502,37 @@
             const input = document.getElementById('searchInput');
             searchQuery = input.value.trim();
             loadDevices(1);
+        }
+
+        // 手动刷新
+        async function manualRefresh() {
+            const btn = document.querySelector('button[onclick="manualRefresh()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '🔄 刷新中...';
+            btn.disabled = true;
+
+            // 显示加载状态
+            document.getElementById('tableContainer').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>正在刷新数据...</p>
+                </div>
+            `;
+
+            // 重新加载数据
+            await loadStats();
+            await loadDevices(currentPage);
+
+            // 恢复按钮
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            // 显示刷新成功提示
+            const updateTime = document.getElementById('updateTime');
+            updateTime.innerHTML = '<span style="color: #28a745;">✓ 刷新成功! ' + new Date().toLocaleTimeString('zh-CN') + '</span>';
+            setTimeout(() => {
+                updateTime.textContent = '更新时间: ' + new Date().toLocaleString('zh-CN');
+            }, 2000);
         }
 
         // 分类筛选

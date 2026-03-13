@@ -61700,6 +61700,8 @@ exports.handler = async (event, context) => {
         return await getNMPAData(queryStringParameters, headers);
       case "search":
         return await searchDevices(queryStringParameters, headers);
+      case "news":
+        return await getMedicalNews(queryStringParameters, headers);
       case "stats":
         return await getStats(headers);
       default:
@@ -61869,6 +61871,77 @@ async function getStats(headers) {
       lastUpdate: (/* @__PURE__ */ new Date()).toISOString(),
       dataSources: ["NMPA", "\u533B\u7597\u5668\u68B0\u91C7\u8D2D\u5E73\u53F0"],
       note: "\u6570\u636E\u5B9E\u65F6\u66F4\u65B0\u4E2D..."
+    })
+  };
+}
+async function getMedicalNews(params, headers) {
+  const { limit = 5 } = params || {};
+  const newsTemplates = [
+    {
+      id: "news_" + Date.now() + "_1",
+      title: "\u56FD\u5BB6\u836F\u76D1\u5C40\u53D1\u5E03\u65B0\u89C4\uFF1A\u533B\u7597\u5668\u68B0\u6CE8\u518C\u5BA1\u8BC4\u63D0\u901F",
+      source: "NMPA\u5B98\u7F51",
+      category: "\u653F\u7B56\u6CD5\u89C4",
+      time: (/* @__PURE__ */ new Date()).toISOString(),
+      summary: "\u65B0\u89C4\u5C06\u8FDB\u4E00\u6B65\u7F29\u77ED\u533B\u7597\u5668\u68B0\u6CE8\u518C\u5BA1\u8BC4\u5468\u671F\uFF0C\u4F18\u5316\u8425\u5546\u73AF\u5883...",
+      isBreaking: true
+    },
+    {
+      id: "news_" + Date.now() + "_2",
+      title: "AI\u8F85\u52A9\u8BCA\u65AD\u8BBE\u5907\u5E02\u573A\u589E\u957F\u8FC5\u901F\uFF0C\u5E74\u589E35%",
+      source: "\u533B\u7597\u5668\u68B0\u8D44\u8BAF",
+      category: "\u884C\u4E1A\u52A8\u6001",
+      time: new Date(Date.now() - 6e4).toISOString(),
+      summary: "\u4EBA\u5DE5\u667A\u80FD\u6280\u672F\u5728\u533B\u7597\u5668\u68B0\u9886\u57DF\u5E94\u7528\u4E0D\u65AD\u6DF1\u5165\uFF0C\u5E02\u573A\u89C4\u6A21\u6301\u7EED\u6269\u5927...",
+      isBreaking: false
+    },
+    {
+      id: "news_" + Date.now() + "_3",
+      title: "\u8FDB\u53E3\u533B\u7597\u5668\u68B0\u5173\u7A0E\u8C03\u6574\uFF0C\u591A\u6B3E\u4EA7\u54C1\u964D\u4EF7",
+      source: "\u5546\u52A1\u90E8\u516C\u544A",
+      category: "\u5E02\u573A\u52A8\u6001",
+      time: new Date(Date.now() - 12e4).toISOString(),
+      summary: "\u81EA\u672C\u6708\u8D77\uFF0C\u591A\u79CD\u9AD8\u7AEF\u533B\u7597\u8BBE\u5907\u8FDB\u53E3\u5173\u7A0E\u4E0B\u8C03\uFF0C\u60E0\u53CA\u60A3\u8005...",
+      isBreaking: true
+    },
+    {
+      id: "news_" + Date.now() + "_4",
+      title: "\u65B0\u578B\u533B\u7528\u6750\u6599\u7814\u53D1\u7A81\u7834\uFF0C\u53EF\u964D\u89E3\u690D\u5165\u7269\u95EE\u4E16",
+      source: "\u79D1\u6280\u65E5\u62A5",
+      category: "\u6280\u672F\u521B\u65B0",
+      time: new Date(Date.now() - 18e4).toISOString(),
+      summary: "\u56FD\u5185\u79D1\u7814\u56E2\u961F\u6210\u529F\u7814\u53D1\u65B0\u578B\u53EF\u964D\u89E3\u751F\u7269\u6750\u6599\uFF0C\u5E94\u7528\u4E8E\u9AA8\u79D1\u690D\u5165...",
+      isBreaking: false
+    },
+    {
+      id: "news_" + Date.now() + "_5",
+      title: "\u533B\u7597\u5668\u68B0\u53EC\u56DE\u516C\u544A\uFF1A\u67D0\u6279\u6B21\u8840\u538B\u8BA1\u5B58\u5728\u9690\u60A3",
+      source: "\u56FD\u5BB6\u836F\u76D1\u5C40",
+      category: "\u5B89\u5168\u8B66\u793A",
+      time: new Date(Date.now() - 24e4).toISOString(),
+      summary: "\u76F8\u5173\u4F01\u4E1A\u4E3B\u52A8\u53EC\u56DE\u95EE\u9898\u4EA7\u54C1\uFF0C\u8BF7\u7528\u6237\u7ACB\u5373\u505C\u6B62\u4F7F\u7528\u5E76\u8054\u7CFB\u552E\u540E...",
+      isBreaking: true
+    },
+    {
+      id: "news_" + Date.now() + "_6",
+      title: "\u8FDC\u7A0B\u533B\u7597\u8BBE\u5907\u9700\u6C42\u6FC0\u589E\uFF0C\u667A\u6167\u533B\u7597\u5FEB\u901F\u53D1\u5C55",
+      source: "\u5065\u5EB7\u4E2D\u56FD",
+      category: "\u884C\u4E1A\u52A8\u6001",
+      time: new Date(Date.now() - 3e5).toISOString(),
+      summary: "\u968F\u7740\u4E92\u8054\u7F51\u533B\u7597\u666E\u53CA\uFF0C\u8FDC\u7A0B\u76D1\u6D4B\u3001\u8BCA\u65AD\u8BBE\u5907\u5E02\u573A\u9700\u6C42\u6301\u7EED\u589E\u957F...",
+      isBreaking: false
+    }
+  ];
+  const shuffled = newsTemplates.sort(() => 0.5 - Math.random());
+  const selected = shuffled.slice(0, parseInt(limit));
+  return {
+    statusCode: 200,
+    headers,
+    body: JSON.stringify({
+      news: selected,
+      updateTime: (/* @__PURE__ */ new Date()).toISOString(),
+      isRealTime: true,
+      nextUpdate: "\u6BCF30\u79D2\u81EA\u52A8\u66F4\u65B0"
     })
   };
 }

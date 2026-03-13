@@ -307,6 +307,598 @@
             color: #fff;
         }
 
+        /* News Section - Real-time */
+        .news-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff3b30;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #ff3b30;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .news-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            flex: 1;
+        }
+
+        .clock {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0071e3;
+            font-family: 'SF Mono', monospace;
+            background: #f5f5f7;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+
+        /* News Ticker Enhanced Animation */
+        /* News Ticker Enhanced Animation */
+        .news-ticker {
+            background: linear-gradient(90deg, #ff3b30 0%, #ff9500 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3);
+        }
+
+        .ticker-content {
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+            font-weight: 500;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 400px;
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1), fadeOut 0.4s ease 4.6s forwards;
+            cursor: pointer;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+            }
+        }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .toast-icon.breaking {
+            background: linear-gradient(135deg, #ff3b30, #ff6b35);
+            animation: shake 0.5s ease infinite;
+        }
+
+        .toast-icon.normal {
+            background: linear-gradient(135deg, #0071e3, #34c759);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            color: #86868b;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .toast-time {
+            font-size: 11px;
+            color: #0071e3;
+            margin-top: 4px;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #86868b;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .toast-close:hover {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        /* Number Counter Animation */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card .number {
+            animation: countUp 0.6s ease-out;
+        }
+
+        /* Table Row Entrance Animation */
+        @keyframes slideInRow {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        tbody tr {
+            animation: slideInRow 0.4s ease-out backwards;
+        }
+
+        tbody tr:nth-child(1) { animation-delay: 0.05s; }
+        tbody tr:nth-child(2) { animation-delay: 0.1s; }
+        tbody tr:nth-child(3) { animation-delay: 0.15s; }
+        tbody tr:nth-child(4) { animation-delay: 0.2s; }
+        tbody tr:nth-child(5) { animation-delay: 0.25s; }
+
+        /* Button Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-effect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Data Update Flash */
+        @keyframes flashUpdate {
+            0% { background-color: rgba(0, 113, 227, 0.2); }
+            100% { background-color: transparent; }
+        }
+
+        .updated {
+            animation: flashUpdate 1s ease-out;
+        }
+
+        /* Card 3D Hover Effect */
+        .stat-card {
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 20px 60px rgba(0, 113, 227, 0.2);
+        }
+
+        /* Loading Skeleton */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f5f5f7 25%, #e8e8ed 50%, #f5f5f7 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+            border-radius: 8px;
+        }
+
+        /* Search Input Focus Glow */
+        .search-box input:focus {
+            outline: none;
+            background: #fff;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+        }
+
+        /* Pulse Animation for Live Indicator */
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .live-indicator::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: rgba(255, 59, 48, 0.4);
+            animation: pulse-ring 2s ease-out infinite;
+            z-index: -1;
+        }
+
+        .live-indicator {
+            position: relative;
+        }
+
+        /* Fade In Animation for Sections */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .news-section,
+        .stats-grid,
+        .search-section,
+        .data-section {
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .news-section { animation-delay: 0.1s; }
+        .stats-grid { animation-delay: 0.2s; }
+        .search-section { animation-delay: 0.3s; }
+        .data-section { animation-delay: 0.4s; }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 400px;
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1), fadeOut 0.4s ease 4.6s forwards;
+            cursor: pointer;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+            }
+        }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .toast-icon.breaking {
+            background: linear-gradient(135deg, #ff3b30, #ff6b35);
+            animation: shake 0.5s ease infinite;
+        }
+
+        .toast-icon.normal {
+            background: linear-gradient(135deg, #0071e3, #34c759);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            color: #86868b;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .toast-time {
+            font-size: 11px;
+            color: #0071e3;
+            margin-top: 4px;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #86868b;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .toast-close:hover {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        .news-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .news-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-bottom: 1px solid #e5e5e5;
+            transition: background 0.2s;
+            position: relative;
+        }
+
+        .news-item:hover {
+            background: #f9f9f9;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .news-badge.breaking {
+            background: #ff3b30;
+            color: white;
+            animation: flash 2s infinite;
+        }
+        .news-badge.normal {
+            background: #0071e3;
+            color: white;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .news-content {
+            flex: 1;
+        }
+
+
+        .news-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .news-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        .news-source {
+            font-weight: 500;
+            color: #0071e3;
+        }
+
+        .news-time {
+            font-family: 'SF Mono', monospace;
+        }
+
+        .news-summary {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .update-status {
+            font-size: 13px;
+            color: #86868b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .update-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #34c759;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .refresh-news-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #0071e3;
+            color: #0071e3;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .refresh-news-btn:hover {
+            background: #0071e3;
+            color: white;
+        }
+
         /* Data Section */
         .data-section {
             background: rgba(255, 255, 255, 0.95);
@@ -502,6 +1094,9 @@
         <div class="tech-line"></div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <header>
         <h1>医疗器械数据平台</h1>
         <p>实时抓取 · 动态更新 · 便捷查询</p>
@@ -509,6 +1104,31 @@
     </header>
 
     <div class="container">
+        <!-- Real-time News Ticker -->
+        <div class="news-section">
+            <div class="news-header">
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    <span class="live-text">LIVE</span>
+                </div>
+                <h3>🚨 医疗新闻实时播报</h3>
+                <span class="clock" id="clock">00:00:00</span>
+            </div>
+            <div class="news-ticker" id="newsTicker">
+                <div class="ticker-content">正在连接实时新闻源...</div>
+            </div>
+            <div class="news-list" id="newsList">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>加载实时新闻...</p>
+                </div>
+            </div>
+            <div class="news-footer">
+                <span class="update-status" id="newsStatus">每30秒自动更新</span>
+                <button class="refresh-news-btn" onclick="loadNews()">🔄 立即刷新</button>
+            </div>
+        </div>
+
         <!-- Stats -->
         <div class="stats-grid" id="statsContainer">
             <div class="loading">
@@ -554,11 +1174,95 @@
         let currentPage = 1;
         let currentCategory = 'all';
         let searchQuery = '';
+        let previousNewsIds = new Set();
 
         // API基础URL
         const API_BASE = window.location.hostname === 'localhost'
             ? 'http://localhost:8888/api'
             : '/api';
+
+        // Toast通知系统
+        function showToast(newsItem) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+
+            const iconClass = newsItem.isBreaking ? 'breaking' : 'normal';
+            const icon = newsItem.isBreaking ? '🚨' : '📰';
+
+            toast.innerHTML = `
+                <div class="toast-icon ${iconClass}">${icon}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${newsItem.title}</div>
+                    <div class="toast-message">${newsItem.summary}</div>
+                    <div class="toast-time">${newsItem.source} · 刚刚</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+
+            // 点击跳转到新闻
+            toast.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('toast-close')) {
+                    document.querySelector('.news-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+            // 自动移除
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 5000);
+
+            container.appendChild(toast);
+        }
+
+        // 创建波纹效果
+        function createRipple(e, button) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+
+            button.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // 为所有按钮添加波纹效果
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                createRipple(e, e.target);
+            }
+        });
+
+        // 数字滚动动画
+        function animateNumber(element, targetValue, duration = 1000) {
+            const startValue = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // 使用缓动函数
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = Math.floor(startValue + (targetValue - startValue) * easeOutQuart);
+
+                element.textContent = current.toLocaleString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
 
         // 加载统计数据
         async function loadStats() {
@@ -569,27 +1273,32 @@
                 const statsHtml = `
                     <div class="stat-card">
                         <h3>总收录器械</h3>
-                        <div class="number">${data.totalDevices.toLocaleString()}</div>
+                        <div class="number" data-value="${data.totalDevices}">0</div>
                         <div class="label">件医疗器械产品</div>
                     </div>
                     <div class="stat-card">
                         <h3>数据分类</h3>
-                        <div class="number">${Object.keys(data.categories).length}</div>
+                        <div class="number" data-value="${Object.keys(data.categories).length}">0</div>
                         <div class="label">大分类</div>
                     </div>
                     <div class="stat-card">
                         <h3>产品总量</h3>
-                        <div class="number">${Object.values(data.categories).reduce((a, b) => a + b, 0)}</div>
+                        <div class="number" data-value="${Object.values(data.categories).reduce((a, b) => a + b, 0)}">0</div>
                         <div class="label">件产品</div>
                     </div>
                     <div class="stat-card">
                         <h3>数据更新</h3>
-                        <div class="number">实时</div>
+                        <div class="number" style="font-size: 28px;">实时</div>
                         <div class="label">${data.note || '动态抓取更新'}</div>
                     </div>
                 `;
 
                 document.getElementById('statsContainer').innerHTML = statsHtml;
+
+                // 触发动画
+                document.querySelectorAll('.stat-card .number[data-value]').forEach(el => {
+                    animateNumber(el, parseInt(el.dataset.value));
+                });
             } catch (error) {
                 console.error('加载统计失败:', error);
             }
@@ -743,16 +1452,110 @@
             }
         });
 
+        // 实时时钟
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('zh-CN', { hour12: false });
+            document.getElementById('clock').textContent = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 加载新闻（带Toast通知）
+        async function loadNews(showNotification = false) {
+            try {
+                const btn = document.querySelector('.refresh-news-btn');
+                if (btn) {
+                    btn.textContent = '🔄 更新中...';
+                    btn.disabled = true;
+                }
+
+                const response = await fetch(`${API_BASE}/news?limit=5`);
+                const data = await response.json();
+
+                // 检查新新闻并显示Toast
+                if (showNotification && data.news) {
+                    data.news.forEach(item => {
+                        if (!previousNewsIds.has(item.id)) {
+                            previousNewsIds.add(item.id);
+                            if (previousNewsIds.size > 10) {
+                                // 保持集合大小
+                                const firstId = previousNewsIds.values().next().value;
+                                previousNewsIds.delete(firstId);
+                            }
+                            showToast(item);
+                        }
+                    });
+                } else {
+                    // 初始化时记录所有ID
+                    data.news.forEach(item => previousNewsIds.add(item.id));
+                }
+
+                // 更新滚动字幕
+                const ticker = document.getElementById('newsTicker');
+                if (ticker && data.news.length > 0) {
+                    ticker.innerHTML = `<div class="ticker-content">🚨 ${data.news[0].title} | ${data.news[0].summary}</div>`;
+                }
+
+                // 更新新闻列表
+                const newsList = document.getElementById('newsList');
+                if (newsList) {
+                    const newsHtml = data.news.map(item => {
+                        const time = new Date(item.time).toLocaleTimeString('zh-CN', { hour12: false });
+                        const badgeClass = item.isBreaking ? 'breaking' : 'normal';
+                        const badgeText = item.isBreaking ? '突发' : item.category;
+                        return `
+                            <div class="news-item">
+                                <span class="news-badge ${badgeClass}">${badgeText}</span>
+                                <div class="news-content">
+                                    <div class="news-title">${item.title}</div>
+                                    <div class="news-meta">
+                                        <span class="news-source">${item.source}</span>
+                                        <span class="news-time">⏱ ${time}</span>
+                                    </div>
+                                    <div class="news-summary">${item.summary}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    newsList.innerHTML = newsHtml;
+                }
+
+                // 更新状态
+                const status = document.getElementById('newsStatus');
+                if (status) {
+                    status.innerHTML = `<span style="color: #34c759;">✓ 已更新 ${new Date().toLocaleTimeString('zh-CN')}</span>`;
+                }
+
+                if (btn) {
+                    btn.textContent = '🔄 立即刷新';
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error('加载新闻失败:', error);
+                const newsList = document.getElementById('newsList');
+                if (newsList) {
+                    newsList.innerHTML = '<p style="text-align:center;color:#ff3b30;padding:2rem;">新闻加载失败，请重试</p>';
+                }
+            }
+        }
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             loadStats();
             loadDevices();
+            loadNews(false); // 初始化不显示Toast
 
-            // 定时刷新（每5分钟）
+            // 定时刷新数据（每5分钟）
             setInterval(() => {
                 loadStats();
                 loadDevices(currentPage);
             }, 300000);
+
+            // 定时刷新新闻（每30秒，带通知）
+            setInterval(() => {
+                loadNews(true);
+            }, 30000);
         });
     </script>
 </body>
